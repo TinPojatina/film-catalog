@@ -34,87 +34,170 @@ INSERT INTO filmovi (naziv) VALUES
                                 ('Captain America: Civil War'),
                                 ('Avengers: Infinity War');
 
--- Create relationships between films and actors
+-- Create relationships between films and actors using subqueries to get actual IDs
 -- Avengers: Endgame cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-                                                 (1, 1), -- Robert Downey Jr.
-                                                 (1, 2), -- Chris Evans
-                                                 (1, 3), -- Scarlett Johansson
-                                                 (1, 4), -- Mark Ruffalo
-                                                 (1, 5), -- Chris Hemsworth
-                                                 (1, 6); -- Jeremy Renner
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Endgame'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Robert Downey Jr.%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Endgame'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Evans%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Endgame'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Scarlett Johansson%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Endgame'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Mark Ruffalo%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Endgame'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Hemsworth%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Endgame'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Jeremy Renner%');
 
 -- Iron Man cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (2, 1); -- Robert Downey Jr.
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Iron Man'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Robert Downey Jr.%');
 
 -- Captain America: The First Avenger cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (3, 2); -- Chris Evans
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Captain America: The First Avenger'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Evans%');
 
 -- Thor cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (4, 5); -- Chris Hemsworth
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Thor'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Hemsworth%');
 
 -- The Avengers cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-                                                 (5, 1), -- Robert Downey Jr.
-                                                 (5, 2), -- Chris Evans
-                                                 (5, 3), -- Scarlett Johansson
-                                                 (5, 4), -- Mark Ruffalo
-                                                 (5, 5), -- Chris Hemsworth
-                                                 (5, 6); -- Jeremy Renner
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Avengers'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Robert Downey Jr.%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Avengers'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Evans%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Avengers'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Scarlett Johansson%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Avengers'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Mark Ruffalo%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Avengers'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Hemsworth%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Avengers'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Jeremy Renner%');
 
 -- Inception cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (6, 7); -- Leonardo DiCaprio
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Inception'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Leonardo DiCaprio%');
 
 -- Forrest Gump cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (7, 8); -- Tom Hanks
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Forrest Gump'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Tom Hanks%');
 
 -- The Devil Wears Prada cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (8, 9); -- Meryl Streep
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Devil Wears Prada'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Meryl Streep%');
 
 -- Malcolm X cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (9, 10); -- Denzel Washington
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Malcolm X'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Denzel Washington%');
 
 -- The Lord of the Rings: The Fellowship of the Ring cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (10, 11); -- Cate Blanchett
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Lord of the Rings: The Fellowship of the Ring'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Cate Blanchett%');
 
 -- The Shawshank Redemption cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (11, 12); -- Morgan Freeman
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'The Shawshank Redemption'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Morgan Freeman%');
 
 -- Black Widow cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-    (12, 3); -- Scarlett Johansson
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Black Widow'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Scarlett Johansson%');
 
 -- Thor: Ragnarok cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-                                                 (13, 5), -- Chris Hemsworth
-                                                 (13, 11); -- Cate Blanchett
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Thor: Ragnarok'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Hemsworth%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Thor: Ragnarok'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Cate Blanchett%');
 
 -- Captain America: Civil War cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-                                                 (14, 2), -- Chris Evans
-                                                 (14, 1), -- Robert Downey Jr.
-                                                 (14, 3); -- Scarlett Johansson
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Captain America: Civil War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Evans%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Captain America: Civil War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Robert Downey Jr.%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Captain America: Civil War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Scarlett Johansson%');
 
 -- Avengers: Infinity War cast
-INSERT INTO film_glumac (film_id, glumac_id) VALUES
-                                                 (15, 1), -- Robert Downey Jr.
-                                                 (15, 2), -- Chris Evans
-                                                 (15, 3), -- Scarlett Johansson
-                                                 (15, 4), -- Mark Ruffalo
-                                                 (15, 5), -- Chris Hemsworth
-                                                 (15, 6); -- Jeremy Renner
+INSERT INTO film_glumac (film_id, glumac_id)
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Infinity War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Robert Downey Jr.%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Infinity War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Evans%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Infinity War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Scarlett Johansson%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Infinity War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Mark Ruffalo%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Infinity War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Chris Hemsworth%')
+UNION ALL
+SELECT
+    (SELECT id FROM filmovi WHERE naziv = 'Avengers: Infinity War'),
+    (SELECT id FROM glumci WHERE opis LIKE 'Jeremy Renner%');
 
 -- Verify data insertion
--- Check total counts
 DO $
 DECLARE
 film_count INTEGER;
