@@ -196,20 +196,3 @@ UNION ALL
 SELECT
     (SELECT id FROM filmovi WHERE naziv = 'Avengers: Infinity War'),
     (SELECT id FROM glumci WHERE opis LIKE 'Jeremy Renner%');
-
--- Verify data insertion
-DO $
-DECLARE
-film_count INTEGER;
-    glumac_count INTEGER;
-    relationship_count INTEGER;
-BEGIN
-SELECT COUNT(*) INTO film_count FROM filmovi;
-SELECT COUNT(*) INTO glumac_count FROM glumci;
-SELECT COUNT(*) INTO relationship_count FROM film_glumac;
-
-RAISE NOTICE 'Sample data inserted successfully:';
-    RAISE NOTICE '- Filmovi: % records', film_count;
-    RAISE NOTICE '- Glumci: % records', glumac_count;
-    RAISE NOTICE '- Film-Glumac relationships: % records', relationship_count;
-END $;

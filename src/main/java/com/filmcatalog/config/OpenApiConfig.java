@@ -121,63 +121,15 @@ public class OpenApiConfig {
     }
 
     /**
-     * Grupirana API dokumentacija - javni endpointovi
+     * Unified API documentation - shows ALL endpoints on one page
+     * This replaces the separate groups and makes all APIs visible by default
      */
     @Bean
-    public GroupedOpenApi publicApi() {
+    public GroupedOpenApi allApisUnified() {
         return GroupedOpenApi.builder()
-                .group("public")
-                .displayName("Javni API")
-                .pathsToMatch("/api/**")
-                .pathsToExclude("/api/admin/**")
-                .build();
-    }
-
-    /**
-     * Grupirana API dokumentacija - filmovi
-     */
-    @Bean
-    public GroupedOpenApi filmoviApi() {
-        return GroupedOpenApi.builder()
-                .group("filmovi")
-                .displayName("Filmovi API")
-                .pathsToMatch("/api/filmovi/**")
-                .build();
-    }
-
-    /**
-     * Grupirana API dokumentacija - glumci
-     */
-    @Bean
-    public GroupedOpenApi glumciApi() {
-        return GroupedOpenApi.builder()
-                .group("glumci")
-                .displayName("Glumci API")
-                .pathsToMatch("/api/glumci/**")
-                .build();
-    }
-
-    /**
-     * Grupirana API dokumentacija - admin endpointovi (za buduće proširenje)
-     */
-    @Bean
-    public GroupedOpenApi adminApi() {
-        return GroupedOpenApi.builder()
-                .group("admin")
-                .displayName("Admin API")
-                .pathsToMatch("/api/admin/**")
-                .build();
-    }
-
-    /**
-     * Grupirana API dokumentacija - statistike
-     */
-    @Bean
-    public GroupedOpenApi statsApi() {
-        return GroupedOpenApi.builder()
-                .group("stats")
-                .displayName("Statistike API")
-                .pathsToMatch("/api/*/stats", "/api/*/most-active", "/api/*/without-*")
+                .group("all-apis")
+                .displayName("🎬 Film Catalog - Complete API")
+                .pathsToMatch("/api/**")  // Include ALL API paths
                 .build();
     }
 }
