@@ -37,7 +37,6 @@ public class GlumacService {
     public GlumacDto createGlumac(GlumacDto glumacDto) {
         logger.info("Creating new glumac: {}", glumacDto.getOpis());
 
-        // Provjeri postoji li glumac s istim opisom
         if (glumacRepository.existsByOpisIgnoreCase(glumacDto.getOpis())) {
             throw new IllegalArgumentException("Glumac s opisom '" + glumacDto.getOpis() + "' već postoji");
         }
@@ -83,7 +82,6 @@ public class GlumacService {
         Glumac existingGlumac = glumacRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Glumac s ID " + id + " nije pronađen"));
 
-        // Provjeri postoji li drugi glumac s istim opisom
         if (!existingGlumac.getOpis().equalsIgnoreCase(glumacDto.getOpis()) &&
                 glumacRepository.existsByOpisIgnoreCase(glumacDto.getOpis())) {
             throw new IllegalArgumentException("Glumac s opisom '" + glumacDto.getOpis() + "' već postoji");
@@ -105,10 +103,8 @@ public class GlumacService {
         Glumac glumac = glumacRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Glumac s ID " + id + " nije pronađen"));
 
-        // Provjeri ima li glumac povezane filmove
         if (!glumac.getFilmovi().isEmpty()) {
             logger.warn("Attempting to delete glumac {} who has {} associated films", id, glumac.getFilmovi().size());
-            // Ukloni sve veze s filmovima prije brisanja
             glumac.getFilmovi().clear();
             glumacRepository.save(glumac);
         }
@@ -118,21 +114,18 @@ public class GlumacService {
     }
 
     /**
-     * Dinamičko filtriranje glumaca - FIXED VERSION
+     * Dinamičko filtriranje
      */
     @Transactional(readOnly = true)
     public List<GlumacDto> filterGlumci(String opis, List<Long> filmoviIds) {
         logger.debug("Filtering glumci with opis: {}, filmoviIds: {}", opis, filmoviIds);
 
-        // Start with null specification
         Specification<Glumac> spec = null;
 
-        // Add opis filter if provided
         if (opis != null && !opis.trim().isEmpty()) {
             spec = GlumacSpecification.hasOpis(opis);
         }
 
-        // Add film filters if provided - PROPER NULL HANDLING
         if (filmoviIds != null && !filmoviIds.isEmpty()) {
             for (Long filmId : filmoviIds) {
                 Specification<Glumac> filmSpec = GlumacSpecification.hasFilm(filmId);
@@ -140,7 +133,6 @@ public class GlumacService {
             }
         }
 
-        // Execute query with proper null check
         List<Glumac> glumci = (spec != null) ?
                 glumacRepository.findAll(spec) :
                 glumacRepository.findAll();
@@ -151,21 +143,18 @@ public class GlumacService {
     }
 
     /**
-     * Paginirana lista glumaca s filtriranjem - FIXED VERSION
+     * Paginirana lista glumaca s filtriranjem
      */
     @Transactional(readOnly = true)
     public Page<GlumacDto> getGlumciPaginated(String opis, List<Long> filmoviIds, Pageable pageable) {
         logger.debug("Fetching paginated glumci - page: {}, size: {}", pageable.getPageNumber(), pageable.getPageSize());
 
-        // Start with null specification
         Specification<Glumac> spec = null;
 
-        // Add opis filter if provided
         if (opis != null && !opis.trim().isEmpty()) {
             spec = GlumacSpecification.hasOpis(opis);
         }
 
-        // Add film filters if provided - PROPER NULL HANDLING
         if (filmoviIds != null && !filmoviIds.isEmpty()) {
             for (Long filmId : filmoviIds) {
                 Specification<Glumac> filmSpec = GlumacSpecification.hasFilm(filmId);
@@ -173,7 +162,6 @@ public class GlumacService {
             }
         }
 
-        // Execute paginated query with proper null check
         Page<Glumac> glumciPage = (spec != null) ?
                 glumacRepository.findAll(spec, pageable) :
                 glumacRepository.findAll(pageable);
