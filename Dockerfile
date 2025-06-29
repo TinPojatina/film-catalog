@@ -1,83 +1,81 @@
-# Multi-stage build za optimizaciju veličine Docker image-a
+# Multi-stage build for optimized Docker image size
 
 # Stage 1: Build stage
-FROM maven:3.9-openjdk-17-slim AS builder
+FROM maven:3.9-eclipse-temurin-17-alpine AS builder
 
 # Metadata
 LABEL maintainer="film-catalog-team@example.com"
 LABEL description="Film Catalog CRUD Application"
 
-# Radni direktorij
+# Working directory
 WORKDIR /app
 
-# Kopiraj Maven konfiguraciju
+# Copy Maven configuration
 COPY pom.xml ./
 COPY .mvn .mvn
 COPY mvnw ./
 
-# Download dependencies (cache layer)
-RUN mvn dependency:go-offline -B
+# Make mvnw executable
+RUN chmod +x mvnw
 
-# Kopiraj izvorni kod
+# Download dependencies (cache layer)
+RUN ./mvnw dependency:go-offline -B
+
+# Copy source code
 COPY src ./src
 
-# Build aplikacije
-RUN mvn clean package -DskipTests -B
+# Build application
+RUN ./mvnw clean package -DskipTests -B
 
-# Provjeri da li je JAR kreiran
+# Verify JAR is created
 RUN ls -la target/
 
 # Stage 2: Runtime stage
-FROM openjdk:17-jdk-slim AS runtime
+FROM eclipse-temurin:17-jre-alpine AS runtime
 
-# Instalacija dodatnih alata za monitoring i debugging
-RUN apt-get update && apt-get install -y \
+# Install additional tools for monitoring and debugging
+RUN apk add --no-cache \
     curl \
     wget \
     procps \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/cache/apk/*
 
-# Kreiranje korisnika za sigurnost (ne pokretati kao root)
-RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+# Create user for security (don't run as root)
+RUN addgroup -g 1001 appgroup && \
+    adduser -u 1001 -G appgroup -s /bin/sh -D appuser
 
-# Radni direktorij
+# Working directory
 WORKDIR /app
 
-# Kreiranje direktorija za logove
+# Create logs directory
 RUN mkdir -p /app/logs && chown -R appuser:appgroup /app
 
-# Kopiraj JAR iz build stage-a
+# Copy JAR from build stage
 COPY --from=builder /app/target/film-catalog-*.jar app.jar
 
-# Promijeni vlasništvo fajlova
+# Change file ownership
 RUN chown -R appuser:appgroup /app
 
-# Prebaci na non-root korisnika
+# Switch to non-root user
 USER appuser
 
-# Ekspoziraj port
+# Expose port
 EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8080/actuator/health || exit 1
 
-# JVM optimizacije za container
+# JVM optimizations for container
 ENV JAVA_OPTS="-XX:+UseContainerSupport \
                -XX:MaxRAMPercentage=75.0 \
                -XX:+UseG1GC \
                -XX:+UseStringDeduplication \
-               -XX:+PrintGCDetails \
-               -XX:+PrintGCTimeStamps \
-               -Xloggc:/app/logs/gc.log \
                -Duser.timezone=Europe/Zagreb \
                -Dfile.encoding=UTF-8"
 
 # Startup command
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
-
-# Alternativno pokretanje s exec format (preporučeno)
-# ENTRYPOINT ["java", "-jar", "app.jar"]
 
 # Metadata labels
 LABEL version="1.0.0"

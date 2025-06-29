@@ -1,101 +1,385 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.</groupId>
-	<artifactId>filmcatalog</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>filmcatalog</name>
-	<description>Demo project for Spring Boot</description>
-	<url/>
+
+	<groupId>com.filmcatalog</groupId>
+	<artifactId>film-catalog</artifactId>
+	<version>1.0.0</version>
+	<name>Film Catalog CRUD Application</name>
+	<description>CRUD aplikacija za upravljanje katalogom filmova i glumaca s Many-to-Many odnosima</description>
+
+	<url>https://github.com/your-username/film-catalog</url>
+
 	<licenses>
-		<license/>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+		</license>
 	</licenses>
+
 	<developers>
-		<developer/>
+		<developer>
+			<id>film-catalog-team</id>
+			<name>Film Catalog Development Team</name>
+			<email>support@filmcatalog.com</email>
+		</developer>
 	</developers>
+
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:git://github.com/your-username/film-catalog.git</connection>
+		<developerConnection>scm:git:ssh://github.com:your-username/film-catalog.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/your-username/film-catalog</url>
 	</scm>
+
 	<properties>
-		<java.version>24</java.version>
+		<!-- Java Version - Changed from 24 to 17 for compatibility -->
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+
+		<!-- Dependency Versions -->
+		<springdoc.version>2.2.0</springdoc.version>
+		<testcontainers.version>1.19.0</testcontainers.version>
+
+		<!-- Plugin Versions -->
+		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+		<maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
+
+		<!-- Encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
+
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
+		<!-- ============================================= -->
+		<!-- Spring Boot Starters -->
+		<!-- ============================================= -->
+
+		<!-- Spring Boot Web Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!-- Spring Boot Data JPA Starter -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- Spring Boot Validation Starter -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!-- Spring Boot Actuator -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<!-- ============================================= -->
+		<!-- Database Dependencies -->
+		<!-- ============================================= -->
+
+		<!-- PostgreSQL Driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Flyway Core -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
+
+		<!-- Flyway PostgreSQL -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
 
+		<!-- ============================================= -->
+		<!-- Documentation & API -->
+		<!-- ============================================= -->
+
+		<!-- SpringDoc OpenAPI -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+
+		<!-- ============================================= -->
+		<!-- Development Tools -->
+		<!-- ============================================= -->
+
+		<!-- Spring Boot DevTools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Spring Boot Docker Compose Support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-docker-compose</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+
+		<!-- ============================================= -->
+		<!-- Testing Dependencies -->
+		<!-- ============================================= -->
+
+		<!-- Spring Boot Test Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Spring Boot Testcontainers -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-testcontainers</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Testcontainers JUnit Jupiter -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Testcontainers PostgreSQL -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- H2 Database for Testing -->
 		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.2.0</version>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
 		</dependency>
+
+		<!-- ============================================= -->
+		<!-- Utility Dependencies -->
+		<!-- ============================================= -->
+
+		<!-- JSON Processing -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java-api</artifactId>
+			<version>3.4.2</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+
 		<plugins>
+			<!-- ============================================= -->
+			<!-- Core Build Plugins -->
+			<!-- ============================================= -->
+
+			<!-- Spring Boot Maven Plugin -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<name>film-catalog:${project.version}</name>
+					</image>
+					<excludes>
+						<exclude>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-devtools</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
+
+			<!-- Maven Compiler Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- ============================================= -->
+			<!-- Testing Plugins -->
+			<!-- ============================================= -->
+
+			<!-- Surefire Plugin for Unit Tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/*IntegrationTest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<!-- Failsafe Plugin for Integration Tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-plugin.version}</version>
+				<configuration>
+					<includes>
+						<include>**/*IntegrationTest.java</include>
+						<include>**/*IT.java</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- ============================================= -->
+			<!-- Database Migration Plugin -->
+			<!-- ============================================= -->
+
+			<!-- Flyway Plugin -->
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<configuration>
+					<url>jdbc:postgresql://localhost:5432/film_catalog</url>
+					<user>postgres</user>
+					<password>password</password>
+					<schemas>
+						<schema>public</schema>
+					</schemas>
+					<locations>
+						<location>classpath:db/migration</location>
+					</locations>
+				</configuration>
+			</plugin>
+
+			<!-- ============================================= -->
+			<!-- Code Quality Plugins -->
+			<!-- ============================================= -->
+
+			<!-- Maven Resources Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
+
+	<!-- ============================================= -->
+	<!-- Profiles -->
+	<!-- ============================================= -->
+
+	<profiles>
+		<!-- Development Profile -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
+		</profile>
+
+		<!-- Production Profile -->
+		<profile>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<jvmArguments>
+								-Xmx512m -Xms256m
+								-Dspring.profiles.active=prod
+							</jvmArguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- Docker Profile -->
+		<profile>
+			<id>docker</id>
+			<properties>
+				<spring.profiles.active>docker</spring.profiles.active>
+			</properties>
+		</profile>
+
+		<!-- Integration Tests Profile -->
+		<profile>
+			<id>integration-tests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

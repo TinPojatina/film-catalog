@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  # PostgreSQL baza podataka
+  # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: film_catalog_db
@@ -15,7 +13,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+      # REMOVED: - ./docker/postgres/init:/docker-entrypoint-initdb.d
     networks:
       - film-catalog-network
     healthcheck:
@@ -30,17 +28,16 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # Spring Boot aplikacija
+  # Spring Boot Application
   app:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        JAR_FILE: target/film-catalog-*.jar
+      # REMOVED: args section (not needed)
     container_name: film_catalog_app
     restart: unless-stopped
     environment:
-      # Spring profil za Docker
+      # Spring profile for Docker
       SPRING_PROFILES_ACTIVE: docker
 
       # Database connection
@@ -56,8 +53,8 @@ services:
       SPRING_FLYWAY_ENABLED: true
       SPRING_FLYWAY_BASELINE_ON_MIGRATE: true
 
-      # Logging
-      LOGGING_LEVEL_COM_EXAMPLE_FILMCATALOG: INFO
+      # Logging (FIXED: correct package name)
+      LOGGING_LEVEL_COM_FILMCATALOG: INFO
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: WARN
 
       # Server settings
@@ -89,7 +86,7 @@ services:
     volumes:
       - app_logs:/app/logs
 
-  # pgAdmin za upravljanje bazom podataka (opcionalno)
+  # pgAdmin for database management (optional)
   pgadmin:
     image: dpage/pgadmin4:7
     container_name: film_catalog_pgadmin
@@ -109,7 +106,7 @@ services:
     profiles:
       - admin
 
-  # Redis za caching (opcionalno, za buduće proširenje)
+  # Redis for caching (optional, for future expansion)
   redis:
     image: redis:7-alpine
     container_name: film_catalog_redis
@@ -124,7 +121,7 @@ services:
     profiles:
       - cache
 
-  # Prometheus za monitoring (opcionalno)
+  # Prometheus for monitoring (optional)
   prometheus:
     image: prom/prometheus:latest
     container_name: film_catalog_prometheus
@@ -134,7 +131,6 @@ services:
     networks:
       - film-catalog-network
     volumes:
-      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -146,7 +142,7 @@ services:
     profiles:
       - monitoring
 
-  # Grafana za vizualizaciju (opcionalno)
+  # Grafana for visualization (optional)
   grafana:
     image: grafana/grafana:latest
     container_name: film_catalog_grafana
@@ -159,19 +155,18 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: admin123
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./docker/grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       - prometheus
     profiles:
       - monitoring
 
-# Mreže
+# Networks
 networks:
   film-catalog-network:
     driver: bridge
     name: film-catalog-network
 
-# Volumeni za perzistentno čuvanje podataka
+# Volumes for persistent data storage
 volumes:
   postgres_data:
     name: film_catalog_postgres_data
