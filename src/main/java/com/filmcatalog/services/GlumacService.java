@@ -108,7 +108,7 @@ public class GlumacService {
         // Provjeri ima li glumac povezane filmove
         if (!glumac.getFilmovi().isEmpty()) {
             logger.warn("Attempting to delete glumac {} who has {} associated films", id, glumac.getFilmovi().size());
-            // Ukloni vse veze s filmovima prije brisanja
+            // Ukloni sve veze s filmovima prije brisanja
             glumac.getFilmovi().clear();
             glumacRepository.save(glumac);
         }
@@ -118,49 +118,66 @@ public class GlumacService {
     }
 
     /**
-     * Dinamičko filtriranje glumaca
+     * Dinamičko filtriranje glumaca - FIXED VERSION
      */
     @Transactional(readOnly = true)
     public List<GlumacDto> filterGlumci(String opis, List<Long> filmoviIds) {
         logger.debug("Filtering glumci with opis: {}, filmoviIds: {}", opis, filmoviIds);
 
-        Specification<Glumac> spec = Specification.where(null);
+        // Start with null specification
+        Specification<Glumac> spec = null;
 
+        // Add opis filter if provided
         if (opis != null && !opis.trim().isEmpty()) {
-            spec = spec.and(GlumacSpecification.hasOpis(opis));
+            spec = GlumacSpecification.hasOpis(opis);
         }
 
+        // Add film filters if provided - PROPER NULL HANDLING
         if (filmoviIds != null && !filmoviIds.isEmpty()) {
             for (Long filmId : filmoviIds) {
-                spec = spec.and(GlumacSpecification.hasFilm(filmId));
+                Specification<Glumac> filmSpec = GlumacSpecification.hasFilm(filmId);
+                spec = (spec == null) ? filmSpec : spec.and(filmSpec);
             }
         }
 
-        return glumacRepository.findAll(spec).stream()
+        // Execute query with proper null check
+        List<Glumac> glumci = (spec != null) ?
+                glumacRepository.findAll(spec) :
+                glumacRepository.findAll();
+
+        return glumci.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Paginirana lista glumaca s filtriranjem
+     * Paginirana lista glumaca s filtriranjem - FIXED VERSION
      */
     @Transactional(readOnly = true)
     public Page<GlumacDto> getGlumciPaginated(String opis, List<Long> filmoviIds, Pageable pageable) {
         logger.debug("Fetching paginated glumci - page: {}, size: {}", pageable.getPageNumber(), pageable.getPageSize());
 
-        Specification<Glumac> spec = Specification.where(null);
+        // Start with null specification
+        Specification<Glumac> spec = null;
 
+        // Add opis filter if provided
         if (opis != null && !opis.trim().isEmpty()) {
-            spec = spec.and(GlumacSpecification.hasOpis(opis));
+            spec = GlumacSpecification.hasOpis(opis);
         }
 
+        // Add film filters if provided - PROPER NULL HANDLING
         if (filmoviIds != null && !filmoviIds.isEmpty()) {
             for (Long filmId : filmoviIds) {
-                spec = spec.and(GlumacSpecification.hasFilm(filmId));
+                Specification<Glumac> filmSpec = GlumacSpecification.hasFilm(filmId);
+                spec = (spec == null) ? filmSpec : spec.and(filmSpec);
             }
         }
 
-        Page<Glumac> glumciPage = glumacRepository.findAll(spec, pageable);
+        // Execute paginated query with proper null check
+        Page<Glumac> glumciPage = (spec != null) ?
+                glumacRepository.findAll(spec, pageable) :
+                glumacRepository.findAll(pageable);
+
         return glumciPage.map(this::convertToDto);
     }
 
