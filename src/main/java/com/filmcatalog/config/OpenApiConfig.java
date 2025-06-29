@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -118,18 +117,5 @@ public class OpenApiConfig {
                                 .in(SecurityScheme.In.HEADER)
                                 .name("X-API-Key")
                                 .description("API Key autentifikacija"));
-    }
-
-    /**
-     * Unified API documentation - shows ALL endpoints on one page
-     * This replaces the separate groups and makes all APIs visible by default
-     */
-    @Bean
-    public GroupedOpenApi allApisUnified() {
-        return GroupedOpenApi.builder()
-                .group("all-apis")
-                .displayName("🎬 Film Catalog - Complete API")
-                .pathsToMatch("/api/**")  // Include ALL API paths
-                .build();
     }
 }
