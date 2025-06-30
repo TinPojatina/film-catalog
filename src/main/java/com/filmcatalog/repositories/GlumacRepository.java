@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 public interface GlumacRepository extends JpaRepository<Glumac, Long>, JpaSpecificationExecutor<Glumac> {
 
@@ -63,7 +64,7 @@ public interface GlumacRepository extends JpaRepository<Glumac, Long>, JpaSpecif
     /**
      * Provjera postojanja glumca po opisu
      */
-    boolean existsByOpisIgnoreCase(String opis);
+    boolean existsByOpisIgnoreCase(@Param("opis") String opis);
 
     /**
      * Pronalazi glumce kreirane nakon određenog datuma

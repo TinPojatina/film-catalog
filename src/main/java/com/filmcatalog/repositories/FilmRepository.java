@@ -58,7 +58,7 @@ public interface FilmRepository extends JpaRepository<Film, Long>, JpaSpecificat
     /**
      * Provjera postojanja filma po nazivu
      */
-    boolean existsByNazivIgnoreCase(String naziv);
+    boolean existsByNazivIgnoreCase(@Param("naziv") String naziv);
 
     /**
      * Brisanje filmova starijih od određenog datuma
