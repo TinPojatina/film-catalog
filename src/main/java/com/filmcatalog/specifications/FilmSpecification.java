@@ -7,9 +7,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 
-/**
- * JPA Specifications za dinamičko filtriranje Film entiteta
- */
 public class FilmSpecification {
 
     /**
@@ -28,7 +25,7 @@ public class FilmSpecification {
     }
 
     /**
-     * Filtriranje po točnom nazivu filma (case-insensitive)
+     * Filtriranje po nazivu filma (case-insensitive)
      */
     public static Specification<Film> hasExactNaziv(String naziv) {
         return (root, query, criteriaBuilder) -> {
@@ -43,7 +40,7 @@ public class FilmSpecification {
     }
 
     /**
-     * Filtriranje po glumcu - filmovi u kojima nastupa određeni glumac
+     *  filmovi u kojima nastupa određeni glumac
      */
     public static Specification<Film> hasGlumac(Long glumacId) {
         return (root, query, criteriaBuilder) -> {
@@ -56,7 +53,7 @@ public class FilmSpecification {
     }
 
     /**
-     * Filtriranje po opisu glumca - filmovi u kojima nastupa glumac s određenim opisom
+     *  filmovi u kojima nastupa glumac s određenim opisom
      */
     public static Specification<Film> hasGlumacWithOpis(String opisGlumca) {
         return (root, query, criteriaBuilder) -> {
@@ -72,7 +69,7 @@ public class FilmSpecification {
     }
 
     /**
-     * Filtriranje po broju glumaca - filmovi s više od određenog broja glumaca
+     *  filmovi s više od određenog broja glumaca
      */
     public static Specification<Film> hasMoreThanGlumci(Integer minGlumci) {
         return (root, query, criteriaBuilder) -> {
@@ -87,7 +84,7 @@ public class FilmSpecification {
     }
 
     /**
-     * Filtriranje po broju glumaca - filmovi s manje od određenog broja glumaca
+     *  filmovi s manje od određenog broja glumaca
      */
     public static Specification<Film> hasLessThanGlumci(Integer maxGlumci) {
         return (root, query, criteriaBuilder) -> {
@@ -102,7 +99,7 @@ public class FilmSpecification {
     }
 
     /**
-     * Filtriranje po datumu kreiranja - filmovi kreirani nakon određenog datuma
+     *  filmovi kreirani nakon određenog datuma
      */
     public static Specification<Film> createdAfter(LocalDateTime datum) {
         return (root, query, criteriaBuilder) -> {
@@ -114,7 +111,7 @@ public class FilmSpecification {
     }
 
     /**
-     * Filtriranje po datumu kreiranja - filmovi kreirani prije određenog datuma
+     *  filmovi kreirani prije određenog datuma
      */
     public static Specification<Film> createdBefore(LocalDateTime datum) {
         return (root, query, criteriaBuilder) -> {
@@ -126,7 +123,7 @@ public class FilmSpecification {
     }
 
     /**
-     * Filtriranje po datumu ažuriranja - filmovi ažurirani nakon određenog datuma
+     *  filmovi ažurirani nakon određenog datuma
      */
     public static Specification<Film> updatedAfter(LocalDateTime datum) {
         return (root, query, criteriaBuilder) -> {

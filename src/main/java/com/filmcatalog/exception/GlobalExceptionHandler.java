@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * Rukovanje ResourceNotFoundException - kada resurs nije pronađen
+     *  kada resurs nije pronađen
      */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex) {
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Rukovanje validation greškama - kada podaci ne prođu validaciju
+     *  kada podaci ne prođu validaciju
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
@@ -89,7 +89,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Rukovanje IllegalArgumentException - neispravni argumenti
+     *  IllegalArgumentException - neispravni argumenti
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
@@ -216,9 +216,6 @@ public class GlobalExceptionHandler {
         }
     }
 
-    /**
-     * Prošireni format odgovora za validation greške
-     */
     @Schema(description = "Format odgovora za validation greške")
     public static class ValidationErrorResponse extends ErrorResponse {
 

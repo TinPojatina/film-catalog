@@ -138,7 +138,7 @@ public class FilmService {
     }
 
     /**
-     * Dinamičko filtriranje filmova - FIXED VERSION
+     * Dinamičko filtriranje filmova
      */
     @Transactional(readOnly = true)
     public List<FilmDto> filterFilmovi(String naziv, List<Long> glumciIds) {
@@ -171,7 +171,7 @@ public class FilmService {
     }
 
     /**
-     * Paginirana lista filmova s filtriranjem - FIXED VERSION
+     * Paginirana lista filmova s filtriranjem
      */
     @Transactional(readOnly = true)
     public Page<FilmDto> getFilmoviPaginated(String naziv, List<Long> glumciIds, Pageable pageable) {

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Konfiguracija za OpenAPI/Swagger dokumentaciju - OPTIMIZED FOR DOCKER
+ * Konfiguracija za OpenAPI/Swagger dokumentaciju
  */
 @Configuration
 public class OpenApiConfig {
@@ -32,14 +32,14 @@ public class OpenApiConfig {
     }
 
     /**
-     * Informacije o API-ju - SIMPLIFIED
+     * Informacije o API-ju
      */
     private Info apiInfo() {
         return new Info()
                 .title("Film Catalog API")
                 .version(appVersion)
                 .description("""
-                    **CRUD API za upravljanje katalogom filmova i glumaca**
+                    **CRUD API za katalog filmova**
                     """);
     }
 }

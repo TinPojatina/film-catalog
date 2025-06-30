@@ -1,5 +1,4 @@
--- Film Catalog Database Schema
--- Flyway migration V1: Create initial tables
+-- Create initial tables
 
 -- Create filmovi table
 CREATE TABLE filmovi (
@@ -46,7 +45,7 @@ CREATE INDEX idx_glumci_created_at ON glumci(created_at);
 CREATE INDEX idx_film_glumac_film_id ON film_glumac(film_id);
 CREATE INDEX idx_film_glumac_glumac_id ON film_glumac(glumac_id);
 
--- Add function to automatically update updated_at timestamp
+-- automatically update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN

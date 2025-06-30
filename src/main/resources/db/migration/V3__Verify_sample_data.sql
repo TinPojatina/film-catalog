@@ -1,4 +1,3 @@
--- Film Catalog Data Verification
 -- Flyway migration V3: Verify sample data insertion and add useful statistics
 
 -- Simple verification queries that will show in application logs

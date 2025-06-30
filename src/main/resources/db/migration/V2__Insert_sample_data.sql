@@ -1,4 +1,3 @@
--- Film Catalog Sample Data
 -- Flyway migration V2: Insert sample data for testing
 
 -- Insert sample glumci

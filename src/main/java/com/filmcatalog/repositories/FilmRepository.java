@@ -26,7 +26,7 @@ public interface FilmRepository extends JpaRepository<Film, Long>, JpaSpecificat
     List<Film> findByGlumacId(@Param("glumacId") Long glumacId);
 
     /**
-     * Pronalazi film s učitanim glumcima (JOIN FETCH za izbjegavanje N+1 problema)
+     * Pronalazi film s učitanim glumcima
      */
     @Query("SELECT f FROM Film f LEFT JOIN FETCH f.glumci WHERE f.id = :id")
     Optional<Film> findByIdWithGlumci(@Param("id") Long id);

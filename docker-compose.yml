@@ -13,7 +13,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # REMOVED: - ./docker/postgres/init:/docker-entrypoint-initdb.d
     networks:
       - film-catalog-network
     healthcheck:
@@ -28,16 +27,13 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # Spring Boot Application
   app:
     build:
       context: .
       dockerfile: Dockerfile
-      # REMOVED: args section (not needed)
     container_name: film_catalog_app
     restart: unless-stopped
     environment:
-      # Spring profile for Docker
       SPRING_PROFILES_ACTIVE: docker
 
       # Database connection
@@ -121,7 +117,6 @@ services:
     profiles:
       - cache
 
-  # Prometheus for monitoring (optional)
   prometheus:
     image: prom/prometheus:latest
     container_name: film_catalog_prometheus
@@ -142,7 +137,6 @@ services:
     profiles:
       - monitoring
 
-  # Grafana for visualization (optional)
   grafana:
     image: grafana/grafana:latest
     container_name: film_catalog_grafana
@@ -160,13 +154,11 @@ services:
     profiles:
       - monitoring
 
-# Networks
 networks:
   film-catalog-network:
     driver: bridge
     name: film-catalog-network
 
-# Volumes for persistent data storage
 volumes:
   postgres_data:
     name: film_catalog_postgres_data

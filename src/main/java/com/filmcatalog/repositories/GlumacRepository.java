@@ -26,7 +26,7 @@ public interface GlumacRepository extends JpaRepository<Glumac, Long>, JpaSpecif
     List<Glumac> findByFilmId(@Param("filmId") Long filmId);
 
     /**
-     * Pronalazi glumca s učitanim filmovima (JOIN FETCH za izbjegavanje N+1 problema)
+     * Pronalazi glumca s učitanim filmovima
      */
     @Query("SELECT g FROM Glumac g LEFT JOIN FETCH g.filmovi WHERE g.id = :id")
     Optional<Glumac> findByIdWithFilmovi(@Param("id") Long id);

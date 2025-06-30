@@ -7,9 +7,6 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import java.time.LocalDateTime;
 
-/**
- * JPA Specifications za dinamičko filtriranje Glumac entiteta
- */
 public class GlumacSpecification {
 
     /**
@@ -43,7 +40,7 @@ public class GlumacSpecification {
     }
 
     /**
-     * Filtriranje po filmu - glumci koji nastupaju u određenom filmu
+     *  glumci koji nastupaju u određenom filmu
      */
     public static Specification<Glumac> hasFilm(Long filmId) {
         return (root, query, criteriaBuilder) -> {
@@ -56,7 +53,7 @@ public class GlumacSpecification {
     }
 
     /**
-     * Filtriranje po nazivu filma - glumci koji nastupaju u filmu s određenim nazivom
+     *  glumci koji nastupaju u filmu s određenim nazivom
      */
     public static Specification<Glumac> hasFilmWithNaziv(String nazivFilma) {
         return (root, query, criteriaBuilder) -> {
@@ -72,7 +69,7 @@ public class GlumacSpecification {
     }
 
     /**
-     * Filtriranje po broju filmova - glumci s više od određenog broja filmova
+     *  glumci s više od određenog broja filmova
      */
     public static Specification<Glumac> hasMoreThanFilmovi(Integer minFilmovi) {
         return (root, query, criteriaBuilder) -> {
@@ -87,7 +84,7 @@ public class GlumacSpecification {
     }
 
     /**
-     * Filtriranje po broju filmova - glumci s manje od određenog broja filmova
+     *  glumci s manje od određenog broja filmova
      */
     public static Specification<Glumac> hasLessThanFilmovi(Integer maxFilmovi) {
         return (root, query, criteriaBuilder) -> {
@@ -117,7 +114,7 @@ public class GlumacSpecification {
     }
 
     /**
-     * Filtriranje po datumu kreiranja - glumci kreirani nakon određenog datuma
+     *  glumci kreirani nakon određenog datuma
      */
     public static Specification<Glumac> createdAfter(LocalDateTime datum) {
         return (root, query, criteriaBuilder) -> {
@@ -129,7 +126,7 @@ public class GlumacSpecification {
     }
 
     /**
-     * Filtriranje po datumu kreiranja - glumci kreirani prije određenog datuma
+     *  glumci kreirani prije određenog datuma
      */
     public static Specification<Glumac> createdBefore(LocalDateTime datum) {
         return (root, query, criteriaBuilder) -> {
@@ -141,7 +138,7 @@ public class GlumacSpecification {
     }
 
     /**
-     * Filtriranje po datumu ažuriranja - glumci ažurirani nakon određenog datuma
+     *  glumci ažurirani nakon određenog datuma
      */
     public static Specification<Glumac> updatedAfter(LocalDateTime datum) {
         return (root, query, criteriaBuilder) -> {
@@ -242,11 +239,9 @@ public class GlumacSpecification {
 
     /**
      * Najaktivniji glumci (sortiranje po broju filmova)
-     * Napomena: ovo se bolje koristi s orderBy u query-ju
      */
     public static Specification<Glumac> mostActive() {
         return (root, query, criteriaBuilder) -> {
-            // Ova specifikacija ne filtrira, samo označava da trebamo sortiranje
             query.orderBy(criteriaBuilder.desc(criteriaBuilder.size(root.get("filmovi"))));
             return null;
         };
